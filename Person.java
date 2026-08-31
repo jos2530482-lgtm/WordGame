@@ -1,9 +1,13 @@
 public class Person {
     private String nameFirst;
     private String nameLast;
-    public Person(String nameFirst, String nameLast) {
-        this.nameFirst = nameFirst;
-        this.nameLast = nameLast;
+    public Person(String firstName, String lastName) {
+        this.nameFirst = firstName;
+        this.nameLast = lastName;
+    }
+    Person(String firstName) {
+        this.nameFirst = firstName;
+        this.nameLast = "";
     }
     public String getNameFirst() {
         return nameFirst;
