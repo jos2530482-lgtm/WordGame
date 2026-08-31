@@ -5,7 +5,7 @@ public class Person {
         this.nameFirst = firstName;
         this.nameLast = lastName;
     }
-    Person(String firstName) {
+    public Person(String firstName) {
         this.nameFirst = firstName;
         this.nameLast = "";
     }
