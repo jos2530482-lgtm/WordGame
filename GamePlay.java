@@ -13,7 +13,7 @@ public class GamePlay {
         System.out.println("Would you like to enter a last name? (y/n)");
         String lastName = scanner.nextLine();
 
-        if (lastName == "y" || lastName == "Y") {
+        if (lastName.equalsIgnoreCase("y")) {
             System.out.println("Please enter your last name.");
             lastName = scanner.nextLine();
             game.person = new Person(firstName, lastName);
