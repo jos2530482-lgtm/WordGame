@@ -12,13 +12,13 @@ public class Person {
     public String getNameFirst() {
         return nameFirst;
     }
-    public void setNameFirst(String nameFirst) {
-        this.nameFirst = nameFirst;
+    public void setNameFirst(String firstName) {
+        this.nameFirst = firstName;
     }
     public String getNameLast() {
         return nameLast;
     }
-    public void setNameLast(String nameLast) {
-        this.nameLast = nameLast;
+    public void setNameLast(String lastName) {
+        this.nameLast = lastName;
     }
 }

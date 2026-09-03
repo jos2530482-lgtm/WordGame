@@ -1,4 +1,3 @@
-
 public class Numbers {
     private int randomNum;
     
@@ -9,7 +8,7 @@ public class Numbers {
         this.randomNum = randomNum;
     }
     public void generateNumber() {
-        this.randomNum = (int) (Math.random() * 100);
+        this.randomNum = (int) (Math.random() * 101);
     }
     
     public boolean compareNumber(int guess) {
