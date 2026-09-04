@@ -1,3 +1,6 @@
+/* Person class represents a person with a first and last name with getters
+and setters for each with overloaded constructors for optional entries.*/
+
 public class Person {
     private String nameFirst;
     private String nameLast;

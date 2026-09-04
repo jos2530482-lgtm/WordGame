@@ -1,3 +1,8 @@
+/* Numbers class generates a random number with a setter and 
+a getter. It also has a method to compare the random number with 
+a user guess with an output message to the user depending on the 
+result of the comparison.
+ */
 public class Numbers {
     private int randomNum;
     

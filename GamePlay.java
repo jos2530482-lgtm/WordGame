@@ -1,5 +1,8 @@
 import java.util.Scanner;
 
+/* GamePlay class Uses Person class to ask user for name with optional
+last name. Uses Numbers class to generate a number between 1 and 100. 
+Asks user to guess a random number. Uses loop to make user guess until correct */
 public class GamePlay {
 
     private Person person;
