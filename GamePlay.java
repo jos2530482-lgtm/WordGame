@@ -27,10 +27,12 @@ public class GamePlay {
 
         boolean sameNumber = false;
         while (sameNumber == false) {
-            System.out.println("guess a number between 0 and 100.");
+            System.out.println(game.person.getNameFirst() + " " + game.person.getNameLast() +
+             " Guess what number I picked between 0 and 100.");
             int guess = scanner.nextInt();
             sameNumber = randomNumber.compareNumber(guess);
         }
+        scanner.close();
     }
 }
 
