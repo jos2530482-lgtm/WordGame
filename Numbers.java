@@ -4,7 +4,7 @@ a user guess with an output message to the user depending on the
 result of the comparison.
  */
 public class Numbers {
-    private int randomNum;
+    private static int randomNum;
     
     public int getRandomNum() {
         return randomNum;
