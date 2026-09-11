@@ -1,16 +1,19 @@
 public class Players extends Person {
     
-    private int money = 1000;
+    private int money;
     
-    public Players(int money) {
-        this.money = money;
+    public Players() {
+        money = 1000;
     }
-    
     public int getMoney() {
         return money;
     }
-    
     public void setMoney(int money) {
         this.money = money;
+    }
+    @Override
+    public String toString() {
+        return "Player: " + getNameFirst() + " " + 
+        getNameLast() + " has $" + money;
     }
 }
