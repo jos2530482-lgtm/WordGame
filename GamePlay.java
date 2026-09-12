@@ -5,11 +5,15 @@ last name. Uses Numbers class to generate a number between 1 and 100.
 Asks user to guess a random number. Uses loop to make user guess until correct */
 public class GamePlay {
 
-    private Person person;
+    private Players player;
+    
     public static void main(String[] args) {
 
         GamePlay game = new GamePlay();
         Scanner scanner = new Scanner(System.in);
+
+        Hosts host = new Hosts("Bob", "Barker");
+        host.randomizeNum();
 
         System.out.println("Please enter your first name.");
         String firstName = scanner.nextLine();
@@ -19,22 +23,15 @@ public class GamePlay {
         if (lastName.equalsIgnoreCase("y")) {
             System.out.println("Please enter your last name.");
             lastName = scanner.nextLine();
-            game.person = new Person(firstName, lastName);
+            game.player = new Players(firstName, lastName);
         } else {
             lastName = "";
-            game.person = new Person(firstName);
+            game.player = new Players(firstName);
         }
 
-        Numbers randomNumber = new Numbers();
-        randomNumber.generateNumber();
-
+        Turn turn = new Turn();
         boolean sameNumber = false;
         while (sameNumber == false) {
-            System.out.println(game.person.getNameFirst() + " " + game.person.getNameLast() +
-             " Guess what number I picked between 0 and 100.");
-            int guess = scanner.nextInt();
-            sameNumber = randomNumber.compareNumber(guess);
         }
-        scanner.close();
     }
 }
