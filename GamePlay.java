@@ -32,6 +32,7 @@ public class GamePlay {
         Turn turn = new Turn();
         boolean sameNumber = false;
         while (sameNumber == false) {
+            sameNumber = turn.takeTurn(game.player, host);
         }
     }
 }
