@@ -38,4 +38,3 @@ public class GamePlay {
         scanner.close();
     }
 }
-
