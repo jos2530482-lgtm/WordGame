@@ -28,11 +28,20 @@ public class GamePlay {
             lastName = "";
             game.player = new Players(firstName);
         }
-
-        Turn turn = new Turn();
-        boolean sameNumber = false;
-        while (sameNumber == false) {
-            sameNumber = turn.takeTurn(game.player, host);
+        boolean newGame = true;
+        while (newGame) {
+            host.randomizeNum();
+            Turn turn = new Turn();
+            boolean sameNumber = false;
+            while (sameNumber == false) {
+                sameNumber = turn.takeTurn(game.player, host);
+            }
+            System.out.println("Would you like to play again? (y/n)");
+            String playAgain = scanner.nextLine();
+            if (playAgain.equalsIgnoreCase("n")) {
+                newGame = false;
+                System.out.println("Thanks for playing!");
+            }
         }
     }
 }
