@@ -1,8 +1,8 @@
 import java.util.Scanner;
 public class Turn {
 
-private int win = 5;
-private int lose = 5;
+private int win = 50;
+private int lose = 50;
 
     public boolean takeTurn(Players player, Hosts host) {
 
