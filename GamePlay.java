@@ -5,7 +5,7 @@ last name. Uses Numbers class to generate a number between 1 and 100.
 Asks user to guess a random number. Uses loop to make user guess until correct */
 public class GamePlay {
 
-    private Players player;
+    private Players[] currentPlayers = new Players[3];
     
     public static void main(String[] args) {
 
@@ -15,33 +15,34 @@ public class GamePlay {
         Hosts host = new Hosts("Bob", "Barker");
         host.randomizeNum();
 
-        System.out.println("Please enter your first name.");
-        String firstName = scanner.nextLine();
-        System.out.println("Would you like to enter a last name? (y/n)");
-        String lastName = scanner.nextLine();
+        for (int i = 0; i < game.currentPlayers.length; i++) {
 
-        if (lastName.equalsIgnoreCase("y")) {
-            System.out.println("Please enter your last name.");
-            lastName = scanner.nextLine();
-            game.player = new Players(firstName, lastName);
-        } else {
-            lastName = "";
-            game.player = new Players(firstName);
-        }
-        boolean newGame = true;
-        while (newGame) {
-            host.randomizeNum();
-            Turn turn = new Turn();
-            boolean sameNumber = false;
-            while (sameNumber == false) {
-                sameNumber = turn.takeTurn(game.player, host);
-            }
-            System.out.println("Would you like to play again? (y/n)");
-            String playAgain = scanner.nextLine();
-            if (playAgain.equalsIgnoreCase("n")) {
-                newGame = false;
-                System.out.println("Thanks for playing!");
+            System.out.println("Please enter your first name for player " + (i + 1) + ".");
+            String firstName = scanner.nextLine();
+            System.out.println("Would you like to enter a last name? (y/n)");
+            String lastName = scanner.nextLine();
+
+            if (lastName.equalsIgnoreCase("y")) {
+                System.out.println("Please enter your last name.");
+                lastName = scanner.nextLine();
+                game.currentPlayers[i] = new Players(firstName, lastName);
+            } else {
+                lastName = "";
+                game.currentPlayers[i] = new Players(firstName);
             }
         }
+        
+       Turn turn = new Turn();
+       boolean sameNumber = false;
+
+       while (sameNumber == false) {
+        for (int i = 0; i < game.currentPlayers.length; i++) {
+            sameNumber = turn.takeTurn(game.currentPlayers[i], host);
+            if (sameNumber) {
+                break;
+            }
+        }
+        }
+        scanner.close();
     }
 }
