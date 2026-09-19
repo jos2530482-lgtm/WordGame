@@ -1,9 +1,6 @@
 import java.util.Scanner;
 public class Turn {
 
-private int win = 50;
-private int lose = 50;
-
     public boolean takeTurn(Players player, Hosts host) {
 
         Scanner scanner = new Scanner(System.in);
@@ -17,11 +14,30 @@ private int lose = 50;
         boolean sameNumber = randomNumber.compareNumber(guess);
 
         if (sameNumber) {
-            player.setMoney(player.getMoney() + win);
+            int prizeType = (int) (Math.random() * 2);
+            if (prizeType == 0) {
+                Money moneyAward = new Money();
+                int winnings = moneyAward.displayWinnings(player, true);
+                player.setMoney(player.getMoney() + winnings);
+            } else {
+                Physical physicalAward = new Physical();
+                int winnings = physicalAward.displayWinnings(player, true);
+                player.setMoney(player.getMoney() + winnings);
+            }
             System.out.println(player);
             return true;
+
         } else {
-            player.setMoney(player.getMoney() - lose);
+            int prizeType = (int) (Math.random() * 2);
+            if (prizeType == 0) {
+                Money moneyAward = new Money();
+                int winnings = moneyAward.displayWinnings(player, false);
+                player.setMoney(player.getMoney() + winnings);
+            } else {
+                Physical physicalAward = new Physical();
+                int winnings = physicalAward.displayWinnings(player, false);
+                player.setMoney(player.getMoney() + winnings);
+            }
             System.out.println(player);
             return false;
         }
