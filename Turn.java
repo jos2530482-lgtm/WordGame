@@ -12,7 +12,7 @@ public class Turn {
 
         Numbers randomNumber = new Numbers();
         boolean sameNumber = randomNumber.compareNumber(guess);
-
+        //if player wins random number is drawn to see if player wins cash or prize.
         if (sameNumber) {
             int prizeType = (int) (Math.random() * 2);
             if (prizeType == 0) {
@@ -26,7 +26,7 @@ public class Turn {
             }
             System.out.println(player);
             return true;
-
+        //if player loses random number is drawn to see if player loses cash or prize.
         } else {
             int prizeType = (int) (Math.random() * 2);
             if (prizeType == 0) {

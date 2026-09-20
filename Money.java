@@ -1,3 +1,5 @@
+/* This Money class now contains the money win/lose fields and displays
+    the player and money won or lost. */
 public class Money implements Award {
     private int win = 50;
     private int lose = 50;
