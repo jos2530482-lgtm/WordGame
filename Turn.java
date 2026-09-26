@@ -3,43 +3,33 @@ public class Turn {
 
     public boolean takeTurn(Players player, Hosts host) {
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
         System.out.println(host.getNameFirst() + " " + host.getNameLast() +
         ": " + player.getNameFirst() + " " + player.getNameLast());
 
-        System.out.println("Please enter a number between 0 and 100.");
-        int guess = scanner.nextInt();
+        Phrases phrase = new Phrases();
+        phrase.makePlayingPhrase();
+        System.out.println("Phrase = " + phrase.getPlayingPhrase());
+        System.out.println("Guess one letter at a time.");
+        String letter = input.nextLine();
 
-        Numbers randomNumber = new Numbers();
-        boolean sameNumber = randomNumber.compareNumber(guess);
-        //if player wins random number is drawn to see if player wins cash or prize.
-        if (sameNumber) {
-            int prizeType = (int) (Math.random() * 2);
-            if (prizeType == 0) {
-                Money moneyAward = new Money();
-                int winnings = moneyAward.displayWinnings(player, true);
-                player.setMoney(player.getMoney() + winnings);
-            } else {
-                Physical physicalAward = new Physical();
-                int winnings = physicalAward.displayWinnings(player, true);
-                player.setMoney(player.getMoney() + winnings);
+        try{
+            if (!letter.matches("[a-zA-Z]")) {
+                System.out.println("Enter one letter only at a time.");
+                return false;
             }
-            System.out.println(player);
-            return true;
-        //if player loses random number is drawn to see if player loses cash or prize.
-        } else {
-            int prizeType = (int) (Math.random() * 2);
-            if (prizeType == 0) {
-                Money moneyAward = new Money();
-                int winnings = moneyAward.displayWinnings(player, false);
+            boolean samePhrase = phrase.findLetters(letter);
+            if (samePhrase) {
+                Money cashAward = new Money();
+                int winnings = cashAward.displayWinnings(player, true);
                 player.setMoney(player.getMoney() + winnings);
-            } else {
-                Physical physicalAward = new Physical();
-                int winnings = physicalAward.displayWinnings(player, false);
-                player.setMoney(player.getMoney() + winnings);
+                System.out.println(player);
+                return true;
             }
-            System.out.println(player);
+        } catch (MultipleLettersException e) {
+            System.out.println(e.getMessage());
             return false;
         }
+        return false;
     }
 }

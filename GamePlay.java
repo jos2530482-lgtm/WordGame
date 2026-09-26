@@ -14,7 +14,6 @@ public class GamePlay {
         Scanner scanner = new Scanner(System.in);
 
         Hosts host = new Hosts("Bob", "Barker");
-        host.randomizeNum();
 
         //loops name input for number of players in game.
         for (int i = 0; i < game.currentPlayers.length; i++) {

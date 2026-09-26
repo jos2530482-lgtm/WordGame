@@ -10,8 +10,8 @@ public class Phrases {
     public String getGamePhrase() {
         return gamePhrase;
     }
-    public void setGamePhrase(String gamePhrase) {
-        this.gamePhrase = gamePhrase;
+    public static void setGamePhrase(String gamePhrase) {
+        Phrases.gamePhrase = gamePhrase;
     }
     public String getPlayingPhrase() {
         return playingPhrase;
@@ -19,18 +19,18 @@ public class Phrases {
     public void setPlayingPhrase(String playingPhrase) {
         this.playingPhrase = playingPhrase;
     }
-    public void makePlayPhrase() {
+    public void makePlayingPhrase() {
         playingPhrase = "";
         for (int i=0; i<gamePhrase.length(); i++) {
-            char letter = gamePhrase.charAt(i);
-            if (letter == ' ') {
+
+            if (gamePhrase.charAt(i) == ' ') {
                 playingPhrase += " ";
             } else {
                 playingPhrase += "_";
             }
         }
     }
-    public void findLetters(String singleLetter) throws MultipleLettersException {
+    public boolean findLetters(String singleLetter) throws MultipleLettersException {
         if (singleLetter.length() > 1) {
             throw new MultipleLettersException();
         }
@@ -43,6 +43,13 @@ public class Phrases {
             index = gamePhrase.indexOf(singleLetter, index + 1);
         }
             System.out.println(playingPhrase);
+
+            if (!playingPhrase.contains("_")) {
+                System.out.println("Correct!");
+                return true;
+            } else {
+                return false;
+            }
         }
     }
     /*public boolean compareNumber(int guess) {
