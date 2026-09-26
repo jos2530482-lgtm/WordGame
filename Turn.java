@@ -8,7 +8,7 @@ public class Turn {
         ": " + player.getNameFirst() + " " + player.getNameLast());
 
         Phrases phrase = new Phrases();
-        phrase.makePlayingPhrase();
+        
         System.out.println("Phrase = " + phrase.getPlayingPhrase());
         System.out.println("Guess one letter at a time.");
         String letter = input.nextLine();

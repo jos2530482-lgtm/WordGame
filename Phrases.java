@@ -5,7 +5,7 @@ result of the comparison.
  */
 public class Phrases {
     private static String gamePhrase;
-    private String playingPhrase;
+    private static String playingPhrase;
     
     public String getGamePhrase() {
         return gamePhrase;
