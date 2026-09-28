@@ -13,8 +13,6 @@ public class GamePlay {
         GamePlay game = new GamePlay();
         Scanner scanner = new Scanner(System.in);
 
-        Hosts host = new Hosts("Bob", "Barker");
-
         //loops name input for number of players in game.
         for (int i = 0; i < game.currentPlayers.length; i++) {
 
@@ -32,17 +30,25 @@ public class GamePlay {
                 game.currentPlayers[i] = new Players(firstName);
             }
         }
-        
-       Turn turn = new Turn();
-       boolean sameNumber = false;
-       //Cycles through each player giving each one turn in order.
-       while (sameNumber == false) {
-        for (int i = 0; i < game.currentPlayers.length; i++) {
-            sameNumber = turn.takeTurn(game.currentPlayers[i], host);
-            if (sameNumber) {
-                break;
+        boolean playAgain = true;
+        while (playAgain) {
+            Hosts host = new Hosts("Bob", "Barker");
+            Turn turn = new Turn();
+            boolean endGame = false;
+            //Cycles through each player giving each one turn in order.
+            while (!endGame) {
+                for (int i = 0; i < game.currentPlayers.length; i++) {
+                    endGame = turn.takeTurn(game.currentPlayers[i], host);
+                    if (endGame) {
+                        break;
+                    }
+                }
             }
-        }
+            System.out.println("Play again? y/n ");
+            String answer = scanner.nextLine();
+            if (!answer.equalsIgnoreCase("y")) {
+                playAgain = false;
+            }
         }
         scanner.close();
     }

@@ -1,11 +1,9 @@
-/* Numbers class generates a random number with a setter and 
-a getter. It also has a method to compare the random number with 
-a user guess with an output message to the user depending on the 
-result of the comparison.
+/* Phrases class 
  */
 public class Phrases {
     private static String gamePhrase;
     private static String playingPhrase;
+    private boolean letterFound;
     
     public String getGamePhrase() {
         return gamePhrase;
@@ -17,7 +15,10 @@ public class Phrases {
         return playingPhrase;
     }
     public void setPlayingPhrase(String playingPhrase) {
-        this.playingPhrase = playingPhrase;
+        Phrases.playingPhrase = playingPhrase;
+    }
+    public boolean getLetterFound() {
+        return letterFound;
     }
     public void makePlayingPhrase() {
         playingPhrase = "";
@@ -34,13 +35,23 @@ public class Phrases {
         if (singleLetter.length() > 1) {
             throw new MultipleLettersException();
         }
-        int index = gamePhrase.indexOf(singleLetter);
+        letterFound = false;
+        int index = gamePhrase.toLowerCase().indexOf(singleLetter.toLowerCase());
         while (index != -1) {
             playingPhrase = playingPhrase.substring(0, index)
             + gamePhrase.substring(index, index + 1)
             + playingPhrase.substring(index + 1);
+            
+            letterFound = true;
+            index = gamePhrase.toLowerCase().indexOf(
+                singleLetter.toLowerCase(), index + 1);
+        }
+        System.out.println(playingPhrase);
+        return !playingPhrase.contains("_");
+    }
+}
 
-            index = gamePhrase.indexOf(singleLetter, index + 1);
+        /*     index = gamePhrase.indexOf(singleLetter, index + 1);
         }
             System.out.println(playingPhrase);
 

@@ -5,7 +5,8 @@ public class Turn {
 
         Scanner input = new Scanner(System.in);
         System.out.println(host.getNameFirst() + " " + host.getNameLast() +
-        ": " + player.getNameFirst() + " " + player.getNameLast());
+        ": " + player.getNameFirst() + " " + player.getNameLast() + 
+        " please guess a letter.");
 
         Phrases phrase = new Phrases();
         
@@ -14,22 +15,33 @@ public class Turn {
         String letter = input.nextLine();
 
         try{
-            if (!letter.matches("[a-zA-Z]")) {
-                System.out.println("Enter one letter only at a time.");
+            if (!letter.matches("[a-zA-Z]+")) {
+                System.out.println("Enter a single letter.");
                 return false;
             }
             boolean samePhrase = phrase.findLetters(letter);
-            if (samePhrase) {
-                Money cashAward = new Money();
-                int winnings = cashAward.displayWinnings(player, true);
-                player.setMoney(player.getMoney() + winnings);
+            if (phrase.getLetterFound()) { 
+                int prizeType = (int) (Math.random() * 2);
+                if (prizeType == 0) {
+                    Money moneyAward = new Money();
+                    int winnings = moneyAward.displayWinnings(player, true);
+                    player.setMoney(player.getMoney() + winnings);
+                } else {
+                    Physical physicalAward = new Physical();
+                    int winnings = physicalAward.displayWinnings(player, true);
+                    player.setMoney(player.getMoney() + winnings);
+                }
                 System.out.println(player);
+            }
+            if (samePhrase) {
+                System.out.println("Congratulations winner!");
                 return true;
             }
+            return false;
+            
         } catch (MultipleLettersException e) {
             System.out.println(e.getMessage());
             return false;
         }
-        return false;
     }
 }
