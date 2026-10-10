@@ -16,12 +16,15 @@ public class GUI {
         ArrayList<String> currentPlayers = new ArrayList<>();
         aFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JLabel label = new JLabel("Current Players: ");
-        
+        JLabel hostLabel = new JLabel("Host: ");
         JButton newPlayerButton = new JButton("Add Player");
+        JButton newHostButton = new JButton("Set Host");
 
         aFrame.setLayout (new FlowLayout());
         aFrame.add(label);
         aFrame.add(newPlayerButton);
+        aFrame.add(hostLabel);
+        aFrame.add(newHostButton);
         newPlayerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -32,6 +35,7 @@ public class GUI {
                 }
             }
         });
+
         aFrame.setVisible(true);
     }
 }
