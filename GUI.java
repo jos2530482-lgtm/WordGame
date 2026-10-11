@@ -13,13 +13,16 @@ public class GUI {
         JFrame aFrame = new JFrame("Word Game");
         aFrame.setSize(500, 500);
 
-        ArrayList<String> currentPlayers = new ArrayList<>();
+        ArrayList<Players> currentPlayers = new ArrayList<>();
+        final Hosts[] currentHost = new Hosts[1];
         aFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JLabel label = new JLabel("Current Players: ");
         JLabel hostLabel = new JLabel("Host: ");
         JLabel newPhraseLabel = new JLabel("New Phrase: ");
         JButton newPlayerButton = new JButton("Add Player");
         JButton newHostButton = new JButton("Set Host");
+        JButton startGameButton = new JButton("Start Game");
+        
 
         aFrame.setLayout (new FlowLayout());
         aFrame.add(label);
@@ -29,6 +32,22 @@ public class GUI {
         aFrame.add(newPhraseLabel);
         JButton newPhraseButton = new JButton("Set New Phrase");
         aFrame.add(newPhraseButton);
+        aFrame.add(startGameButton);
+        startGameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                if (currentPlayers.isEmpty()) {
+                    JOptionPane.showMessageDialog(aFrame, "add a player");
+                    return;
+                }
+                Phrases gamePlay = new Phrases();
+                if (gamePlay.getGamePhrase() == null || gamePlay.getGamePhrase().isEmpty()) {
+                    JOptionPane.showMessageDialog(aFrame, "set game phrase");
+                    return;
+                }
+                JOptionPane.showMessageDialog(aFrame, "Game started!");
+            }
+        });
         newPhraseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -46,8 +65,9 @@ public class GUI {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 String playerName = JOptionPane.showInputDialog("Enter player name:");
                 if (playerName != null && !playerName.isEmpty()) {
-                    currentPlayers.add(playerName);
-                    label.setText("Current Players: " + String.join(", ", currentPlayers));
+                    Players newPlayer = new Players(playerName);
+                    currentPlayers.add(newPlayer);
+                    label.setText("Players: " + currentPlayers);
                 }
             }
         });
@@ -62,8 +82,8 @@ public class GUI {
                 if (lastName == null || lastName.isEmpty()) {
                     return;
                 }
-                Hosts currentHost = new Hosts(firstName, lastName, true);
-                hostLabel.setText("Host: " + currentHost.getNameFirst() + " " + currentHost.getNameLast());
+                currentHost[0] = new Hosts(firstName, lastName, true);
+                hostLabel.setText("Host: " + currentHost[0].getNameFirst() + " " + currentHost[0].getNameLast());
 
                 String phrase = JOptionPane.showInputDialog("Enter the phrase for this game.");
                 if (phrase == null || phrase.isEmpty()) {
@@ -71,6 +91,10 @@ public class GUI {
                 }
                 Phrases.setGamePhrase(phrase);
                 Phrases gamePlay = new Phrases();
+                if (gamePlay.getGamePhrase() == null || gamePlay.getGamePhrase().isEmpty()) {
+                    JOptionPane.showMessageDialog(aFrame, "set game phrase");
+                    return;
+                }
                 gamePlay.makePlayingPhrase();
                 newPhraseLabel.setText("New Phrase: " + gamePlay.getPlayingPhrase());
             }
