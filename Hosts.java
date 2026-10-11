@@ -13,4 +13,7 @@ public class Hosts extends Person {
         Phrases gamePlay = new Phrases();
         gamePlay.makePlayingPhrase();
     }
+    public Hosts(String firstName, String lastName, boolean useGUI) {
+        super(firstName, lastName);
+    }
 }

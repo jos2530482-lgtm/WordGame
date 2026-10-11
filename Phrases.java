@@ -50,28 +50,3 @@ public class Phrases {
         return !playingPhrase.contains("_");
     }
 }
-
-        /*     index = gamePhrase.indexOf(singleLetter, index + 1);
-        }
-            System.out.println(playingPhrase);
-
-            if (!playingPhrase.contains("_")) {
-                System.out.println("Correct!");
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-    /*public boolean compareNumber(int guess) {
-    if (guess == randomNum) {
-        System.out.println("Congratulations, you guessed the number!");
-        return true;
-    } else if (guess > randomNum) {
-        System.out.println("I'm sorry. That guess was too high.");
-        return false;
-    } else {
-        System.out.println("I'm sorry. That guess was too low.");
-        return false;
-    }
-}*/
