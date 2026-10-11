@@ -15,6 +15,7 @@ public class GUI {
 
         ArrayList<Players> currentPlayers = new ArrayList<>();
         final Hosts[] currentHost = new Hosts[1];
+
         aFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JLabel label = new JLabel("Current Players: ");
         JLabel hostLabel = new JLabel("Host: ");
@@ -22,6 +23,7 @@ public class GUI {
         JButton newPlayerButton = new JButton("Add Player");
         JButton newHostButton = new JButton("Set Host");
         JButton startGameButton = new JButton("Start Game");
+        JButton newPhraseButton = new JButton("Set New Phrase");
         
 
         aFrame.setLayout (new FlowLayout());
@@ -30,14 +32,18 @@ public class GUI {
         aFrame.add(hostLabel);
         aFrame.add(newHostButton);
         aFrame.add(newPhraseLabel);
-        JButton newPhraseButton = new JButton("Set New Phrase");
         aFrame.add(newPhraseButton);
         aFrame.add(startGameButton);
-        startGameButton.addActionListener(new ActionListener() {
+
+        startGameButton.addActionListener(new ActionListener() {    
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 if (currentPlayers.isEmpty()) {
                     JOptionPane.showMessageDialog(aFrame, "add a player");
+                    return;
+                }
+                if (currentHost[0] == null) {
+                    JOptionPane.showMessageDialog(aFrame, "set a host");
                     return;
                 }
                 Phrases gamePlay = new Phrases();
@@ -45,7 +51,42 @@ public class GUI {
                     JOptionPane.showMessageDialog(aFrame, "set game phrase");
                     return;
                 }
-                JOptionPane.showMessageDialog(aFrame, "Game started!");
+                gamePlay.makePlayingPhrase();
+                boolean gameWon = false;
+                while (!gameWon) {
+                    for (Players player : currentPlayers) {
+                        String letter = JOptionPane.showInputDialog(
+                            aFrame, currentHost[0].getNameFirst() + " " + 
+                            currentHost[0].getNameLast() + "'s turn for " + 
+                            player.getNameFirst() + "\n\nPhrase: " + gamePlay.getPlayingPhrase() + 
+                            "\n\nEnter a letter:");
+                            if (letter == null) {
+                                return;
+                            }
+                                letter = letter.trim();
+                                if (!letter.matches("[a-zA-Z]")) {
+                                    JOptionPane.showMessageDialog(aFrame, "Please enter a valid letter.");
+                                    continue;
+                                }
+                                try {
+                                    boolean phraseComplete = gamePlay.findLetters(letter);
+
+                                    if (gamePlay.getLetterFound()) {
+                                        JOptionPane.showMessageDialog(aFrame, "Correct! The letter " + letter + " is in the phrase. \n\n" + " Phrase: " + gamePlay.getPlayingPhrase());
+                                    } else {
+                                        JOptionPane.showMessageDialog(aFrame, "Sorry, the letter " + letter + " is not in the phrase. \n\n" + "Phrase: " + gamePlay.getPlayingPhrase());
+                                    }
+                                    newPhraseLabel.setText("Phrase: " + gamePlay.getPlayingPhrase());
+                                    if (phraseComplete) {
+                                        JOptionPane.showMessageDialog(aFrame, "Congratulations, " + "! You solved it.");
+                                        gameWon = true;
+                                        break;
+                                    }
+                                    }catch (MultipleLettersException ex) {
+                                    JOptionPane.showMessageDialog(aFrame,ex.getMessage());
+                               }
+                    }
+                    }
             }
         });
         newPhraseButton.addActionListener(new ActionListener() {
