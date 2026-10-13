@@ -9,13 +9,18 @@ public class Physical implements Award {
         int randomNumber = (int) (Math.random() * physicalPrizes.length);
         return randomNumber;
     }
+    public String getPrize() {
+        return physicalPrizes[getRandomPrize()];
+    }
+
     @Override
     public int displayWinnings(Players player, boolean correct) {
-        int randomPrizeIndex = getRandomPrize();
+        
+        String prize = getPrize();
         if (correct) {
-            System.out.println(player + " wins a " + physicalPrizes[randomPrizeIndex]);
+            System.out.println(player + " wins a " + prize);
         } else {
-            System.out.println(player + " does not win a " + physicalPrizes[randomPrizeIndex]);
+            System.out.println(player + " does not win a " + prize);
         }
         return 0;
     }
