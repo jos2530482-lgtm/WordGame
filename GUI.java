@@ -10,7 +10,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
-import java.awt.Dimension;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
 public class GUI {
 
@@ -45,6 +46,11 @@ public class GUI {
         JLabel label = new JLabel("Current Players: ");
         JLabel hostLabel = new JLabel("Host: ");
         JLabel newPhraseLabel = new JLabel("New Phrase: ");
+        JTextArea messageArea = new JTextArea(10, 30);
+        messageArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(messageArea);
+        messageArea.append("Welcome to the Word Game!\n");
+        messageArea.append("Use the Game menu to add players and set a host.\n");
 
         JButton newPhraseButton = new JButton("Set New Phrase");
         JButton startGameButton = new JButton("Start Game");
@@ -67,6 +73,7 @@ public class GUI {
         aFrame.add(newPhraseButton);
         startGamePanel.add(startGameButton);
         aFrame.add(startGamePanel);
+        aFrame.add(scrollPane);
 
         // button that adds a new player to current players.
         addPlayerItem.addActionListener(new ActionListener() {
@@ -151,8 +158,8 @@ public class GUI {
                 );
 
                 if (newPhrase == null || newPhrase.trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(
-                        aFrame, "Phrase cannot be empty."
+                    messageArea.append(
+                        "Phrase cannot be empty.\n"
                     );
                     return;
                 }
@@ -189,15 +196,15 @@ public class GUI {
             public void actionPerformed(java.awt.event.ActionEvent e) {
 
                 if (currentPlayers.isEmpty()) {
-                    JOptionPane.showMessageDialog(
-                        aFrame, "Please add a player first."
+                    messageArea.append(
+                        "Please add a player first.\n"
                     );
                     return;
                 }
 
                 if (currentHost[0] == null) {
-                    JOptionPane.showMessageDialog(
-                        aFrame, "Please set a host first."
+                    messageArea.append(
+                        "Please set a host first.\n"
                     );
                     return;
                 }
@@ -210,8 +217,8 @@ public class GUI {
 
                     if (gamePlay.getGamePhrase() == null
                             || gamePlay.getGamePhrase().isEmpty()) {
-                        JOptionPane.showMessageDialog(
-                            aFrame, "Please set a game phrase first."
+                        messageArea.append(
+                            "Please set a game phrase first.\n"
                         );
                         return;
                     }
@@ -255,10 +262,8 @@ public class GUI {
                                     break;
                                 }
 
-                                JOptionPane.showMessageDialog(
-                                    aFrame,
-                                    "Invalid input. Enter a single letter."
-                                );
+                                messageArea.append(
+                                    "Invalid input. Enter a single letter.\n");
                             }
 
                             try {
@@ -353,9 +358,7 @@ public class GUI {
 
                             } catch (MultipleLettersException ex) {
 
-                                JOptionPane.showMessageDialog(
-                                    aFrame, ex.getMessage()
-                                );
+                                messageArea.append(ex.getMessage() + "\n");
                             }
 
                             // Stop giving turns once the phrase is solved.
@@ -374,7 +377,7 @@ public class GUI {
                     );
 
                     if (playAgain == JOptionPane.YES_OPTION) {
-
+                        messageArea.setText("");
                         String newPhrase = JOptionPane.showInputDialog(
                             aFrame, "Enter a new phrase:"
                         );
