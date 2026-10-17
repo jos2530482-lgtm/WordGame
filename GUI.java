@@ -8,6 +8,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import java.awt.GridLayout;
+import java.awt.Dimension;
 
 public class GUI {
 
@@ -19,12 +22,19 @@ public class GUI {
         aFrame.setLayout(new FlowLayout());
         JMenuBar menuBar = new JMenuBar();
         JMenu gameMenu = new JMenu("Game");
+        JMenu aboutMenu = new JMenu("About");
+        aboutMenu.setMnemonic('A');
+        JMenuItem layoutItem = new JMenuItem("Layout");
         JMenuItem addPlayerItem = new JMenuItem("Add Player");
         JMenuItem addHostItem = new JMenuItem("Set Host");
+        
+        aboutMenu.add(layoutItem);
         gameMenu.setMnemonic('G');
         gameMenu.add(addPlayerItem);
+        
         gameMenu.add(addHostItem);
         menuBar.add(gameMenu);
+        menuBar.add(aboutMenu);
         aFrame.setJMenuBar(menuBar);
 
         ArrayList<Players> currentPlayers = new ArrayList<>();
@@ -36,14 +46,27 @@ public class GUI {
         JLabel hostLabel = new JLabel("Host: ");
         JLabel newPhraseLabel = new JLabel("New Phrase: ");
 
-        JButton startGameButton = new JButton("Start Game");
         JButton newPhraseButton = new JButton("Set New Phrase");
+        JButton startGameButton = new JButton("Start Game");
 
-        aFrame.add(label);
-        aFrame.add(hostLabel);
-        aFrame.add(newPhraseLabel);
+        JPanel infoPanel = new JPanel(new GridLayout(0, 1));
+        JPanel phrasePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel startGamePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        startGamePanel.setPreferredSize(new java.awt.Dimension(500, 100));
+
+
+        infoPanel.setLayout(new GridLayout(5, 1));
+        infoPanel.add(label);
+        infoPanel.add(hostLabel);
+        infoPanel.add(newPhraseLabel);
+
+        phrasePanel.add(newPhraseLabel);
+
+        aFrame.add(infoPanel);
+        aFrame.add(phrasePanel);
         aFrame.add(newPhraseButton);
-        aFrame.add(startGameButton);
+        startGamePanel.add(startGameButton);
+        aFrame.add(startGamePanel);
 
         // button that adds a new player to current players.
         addPlayerItem.addActionListener(new ActionListener() {
@@ -144,7 +167,21 @@ public class GUI {
                 );
             }
         });
-
+        // layout menu. displays reason for layouts.
+        layoutItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                JOptionPane.showMessageDialog(
+                    aFrame,
+                    "The layout of this game is designed to be simple and intuitive. "
+                    + "The menu bar allows you to add players, set a host, and start the game. "
+                    + "The main area displays the current players, the host, and the phrase to guess. "
+                    + "Buttons are provided for starting the game and setting a new phrase.",
+                    "Layout",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+        });
 
         // button that starts the game
         startGameButton.addActionListener(new ActionListener() {
