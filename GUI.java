@@ -37,7 +37,7 @@ public class GUI {
         aFrame.add(newPhraseButton);
         aFrame.add(startGameButton);
 
-        // ADD PLAYER BUTTON
+        // button that adds a new player to current players.
         newPlayerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -49,7 +49,14 @@ public class GUI {
                 if (playerName != null && !playerName.trim().isEmpty()) {
                     Players newPlayer = new Players(playerName.trim());
                     currentPlayers.add(newPlayer);
-                    label.setText("Players: " + currentPlayers);
+                    StringBuilder playerList = new StringBuilder("Current Players: ");
+                    for (int i = 0; i < currentPlayers.size(); i++) {
+                        if (i > 0) {
+                            playerList.append(", ");
+                        }
+                        playerList.append(currentPlayers.get(i).getNameFirst());
+                    }
+                    label.setText(playerList.toString());
                 }
             }
         });
@@ -130,6 +137,7 @@ public class GUI {
             }
         });
 
+
         // button that starts the game
         startGameButton.addActionListener(new ActionListener() {
             @Override
@@ -171,34 +179,41 @@ public class GUI {
 
                     boolean gameWon = false;
 
-                    // keeps the game running until a player guesses the phrase correctly.
+                    // Keep playing until a player solves the phrase.
                     while (!gameWon) {
 
                         for (Players player : currentPlayers) {
 
-                            String letter = JOptionPane.showInputDialog(
-                                aFrame,
-                                currentHost[0].getNameFirst() + " "
-                                + currentHost[0].getNameLast()
-                                + "'s turn for "
-                                + player.getNameFirst()
-                                + "\n\nPhrase: "
-                                + gamePlay.getPlayingPhrase()
-                                + "\n\nEnter one letter:"
-                            );
+                            String letter;
 
-                            if (letter == null) {
-                                return;
-                            }
+                            // Keep asking this player until input is valid.
+                            while (true) {
 
-                            letter = letter.trim();
+                                letter = JOptionPane.showInputDialog(
+                                    aFrame,
+                                    currentHost[0].getNameFirst() + " "
+                                    + currentHost[0].getNameLast()
+                                    + "'s turn for "
+                                    + player.getNameFirst()
+                                    + "\n\nPhrase: "
+                                    + gamePlay.getPlayingPhrase()
+                                    + "\n\nEnter one letter:"
+                                );
 
-                            if (!letter.matches("[a-zA-Z]")) {
+                                if (letter == null) {
+                                    return;
+                                }
+
+                                letter = letter.trim();
+
+                                if (letter.matches("[a-zA-Z]")) {
+                                    break;
+                                }
+
                                 JOptionPane.showMessageDialog(
                                     aFrame,
-                                    "Please enter exactly one letter."
+                                    "Invalid input. Enter a single letter."
                                 );
-                                continue;
                             }
 
                             try {
@@ -209,7 +224,7 @@ public class GUI {
                                 boolean correct =
                                     gamePlay.getLetterFound();
 
-                                // uses random to give prize or money reward.
+                                // Randomly award money or a physical prize.
                                 if (Math.random() < 0.5) {
 
                                     int change =
@@ -257,7 +272,7 @@ public class GUI {
                                     }
                                 }
 
-                                // displays the result of the guess to the phrase.
+                                // Display the result of the guess.
                                 if (correct) {
                                     JOptionPane.showMessageDialog(
                                         aFrame,
@@ -278,7 +293,7 @@ public class GUI {
                                     "Phrase: " + gamePlay.getPlayingPhrase()
                                 );
 
-                                // checks guess against phrase.
+                                // Check whether the phrase is solved.
                                 if (phraseComplete) {
                                     JOptionPane.showMessageDialog(
                                         aFrame,
@@ -297,10 +312,15 @@ public class GUI {
                                     aFrame, ex.getMessage()
                                 );
                             }
+
+                            // Stop giving turns once the phrase is solved.
+                            if (gameWon) {
+                                break;
+                            }
                         }
                     }
 
-                    // asks user if they want to play again and set new phrase.
+                    // Ask whether the user wants to play another round.
                     int playAgain = JOptionPane.showConfirmDialog(
                         aFrame,
                         "Do you want to play again?",
@@ -334,7 +354,8 @@ public class GUI {
                         playAnotherRound = false;
 
                         JOptionPane.showMessageDialog(
-                            aFrame, "Thanks for playing!");
+                            aFrame, "Thanks for playing!"
+                        );
                     }
                 }
             }
