@@ -5,6 +5,9 @@ import javax.swing.JOptionPane;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.awt.event.ActionListener;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 public class GUI {
 
@@ -14,6 +17,15 @@ public class GUI {
         aFrame.setSize(500, 500);
         aFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         aFrame.setLayout(new FlowLayout());
+        JMenuBar menuBar = new JMenuBar();
+        JMenu gameMenu = new JMenu("Game");
+        JMenuItem addPlayerItem = new JMenuItem("Add Player");
+        JMenuItem addHostItem = new JMenuItem("Set Host");
+        gameMenu.setMnemonic('G');
+        gameMenu.add(addPlayerItem);
+        gameMenu.add(addHostItem);
+        menuBar.add(gameMenu);
+        aFrame.setJMenuBar(menuBar);
 
         ArrayList<Players> currentPlayers = new ArrayList<>();
         Money moneyAward = new Money();
@@ -24,21 +36,17 @@ public class GUI {
         JLabel hostLabel = new JLabel("Host: ");
         JLabel newPhraseLabel = new JLabel("New Phrase: ");
 
-        JButton newPlayerButton = new JButton("Add Player");
-        JButton newHostButton = new JButton("Set Host");
         JButton startGameButton = new JButton("Start Game");
         JButton newPhraseButton = new JButton("Set New Phrase");
 
         aFrame.add(label);
-        aFrame.add(newPlayerButton);
         aFrame.add(hostLabel);
-        aFrame.add(newHostButton);
         aFrame.add(newPhraseLabel);
         aFrame.add(newPhraseButton);
         aFrame.add(startGameButton);
 
         // button that adds a new player to current players.
-        newPlayerButton.addActionListener(new ActionListener() {
+        addPlayerItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
 
@@ -62,7 +70,7 @@ public class GUI {
         });
 
         // button that allows the user to set a host and enter a phrase for the game
-        newHostButton.addActionListener(new ActionListener() {
+        addHostItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
 
