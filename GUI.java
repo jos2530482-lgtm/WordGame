@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import java.awt.GridLayout;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
+import javax.swing.JCheckBox;
 
 public class GUI {
 
@@ -49,6 +50,17 @@ public class GUI {
         JTextArea messageArea = new JTextArea(10, 30);
         messageArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(messageArea);
+        JCheckBox saveMessageCheckBox = new JCheckBox("Save Messages");
+
+        // keeps messages if box is checked.
+        java.util.function.Consumer<String> displayMessage = (message) -> {
+            if (saveMessageCheckBox.isSelected()) {
+                messageArea.append(message + "\n");
+            } else {
+                messageArea.setText(message + "\n");
+            }
+        };
+
         messageArea.append("Welcome to the Word Game!\n");
         messageArea.append("Use the Game menu to add players and set a host.\n");
 
@@ -58,8 +70,7 @@ public class GUI {
         JPanel infoPanel = new JPanel(new GridLayout(0, 1));
         JPanel phrasePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JPanel startGamePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        startGamePanel.setPreferredSize(new java.awt.Dimension(500, 100));
-
+        startGamePanel.setPreferredSize(new java.awt.Dimension(350, 100));
 
         infoPanel.setLayout(new GridLayout(5, 1));
         infoPanel.add(label);
@@ -73,7 +84,10 @@ public class GUI {
         aFrame.add(newPhraseButton);
         startGamePanel.add(startGameButton);
         aFrame.add(startGamePanel);
+        aFrame.add(saveMessageCheckBox);
         aFrame.add(scrollPane);
+
+
 
         // button that adds a new player to current players.
         addPlayerItem.addActionListener(new ActionListener() {
@@ -83,7 +97,6 @@ public class GUI {
                 String playerName = JOptionPane.showInputDialog(
                     aFrame, "Enter player name:"
                 );
-
                 if (playerName != null && !playerName.trim().isEmpty()) {
                     Players newPlayer = new Players(playerName.trim());
                     currentPlayers.add(newPlayer);
@@ -107,41 +120,31 @@ public class GUI {
                 String firstName = JOptionPane.showInputDialog(
                     aFrame, "Enter host first name:"
                 );
-
                 if (firstName == null || firstName.trim().isEmpty()) {
                     return;
                 }
-
                 String lastName = JOptionPane.showInputDialog(
                     aFrame, "Enter host last name:"
                 );
-
                 if (lastName == null || lastName.trim().isEmpty()) {
                     return;
                 }
-
                 currentHost[0] = new Hosts(
                     firstName.trim(), lastName.trim(), true
                 );
-
                 hostLabel.setText(
                     "Host: " + currentHost[0].getNameFirst()
                     + " " + currentHost[0].getNameLast()
                 );
-
                 String phrase = JOptionPane.showInputDialog(
                     aFrame, "Enter the phrase for this game:"
                 );
-
                 if (phrase == null || phrase.trim().isEmpty()) {
                     return;
                 }
-
                 Phrases.setGamePhrase(phrase.trim());
-
                 Phrases gamePlay = new Phrases();
                 gamePlay.makePlayingPhrase();
-
                 newPhraseLabel.setText(
                     "New Phrase: " + gamePlay.getPlayingPhrase()
                 );
@@ -158,7 +161,7 @@ public class GUI {
                 );
 
                 if (newPhrase == null || newPhrase.trim().isEmpty()) {
-                    messageArea.append(
+                    displayMessage.accept(
                         "Phrase cannot be empty.\n"
                     );
                     return;
@@ -194,16 +197,14 @@ public class GUI {
         startGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
-
                 if (currentPlayers.isEmpty()) {
-                    messageArea.append(
+                    displayMessage.accept(
                         "Please add a player first.\n"
                     );
                     return;
                 }
-
                 if (currentHost[0] == null) {
-                    messageArea.append(
+                    displayMessage.accept(
                         "Please set a host first.\n"
                     );
                     return;
@@ -212,80 +213,63 @@ public class GUI {
                 boolean playAnotherRound = true;
 
                 while (playAnotherRound) {
-
                     Phrases gamePlay = new Phrases();
-
                     if (gamePlay.getGamePhrase() == null
                             || gamePlay.getGamePhrase().isEmpty()) {
-                        messageArea.append(
+                        displayMessage.accept(
                             "Please set a game phrase first.\n"
                         );
                         return;
                     }
 
                     gamePlay.makePlayingPhrase();
-
                     newPhraseLabel.setText(
                         "Phrase: " + gamePlay.getPlayingPhrase()
                     );
-
                     boolean gameWon = false;
 
                     // Keep playing until a player solves the phrase.
                     while (!gameWon) {
-
                         for (Players player : currentPlayers) {
-
                             String letter;
-
                             // Keep asking this player until input is valid.
                             while (true) {
-
                                 letter = JOptionPane.showInputDialog(
                                     aFrame,
                                     currentHost[0].getNameFirst() + " "
                                     + currentHost[0].getNameLast()
-                                    + "'s turn for "
+                                    + ": player "
                                     + player.getNameFirst()
                                     + "\n\nPhrase: "
                                     + gamePlay.getPlayingPhrase()
                                     + "\n\nEnter one letter:"
                                 );
-
                                 if (letter == null) {
                                     return;
                                 }
-
                                 letter = letter.trim();
-
                                 if (letter.matches("[a-zA-Z]")) {
                                     break;
                                 }
-
-                                messageArea.append(
-                                    "Invalid input. Enter a single letter.\n");
+                                displayMessage.accept(
+                                    "Invalid input. Enter a single letter.\n"
+                                );
                             }
-
                             try {
-
                                 boolean phraseComplete =
                                     gamePlay.findLetters(letter);
-
                                 boolean correct =
                                     gamePlay.getLetterFound();
 
                                 // Randomly award money or a physical prize.
                                 if (Math.random() < 0.5) {
-
                                     int change =
                                         moneyAward.displayWinnings(
                                             player, correct
                                         );
-
                                     player.setMoney(
                                         player.getMoney() + change
                                     );
-
                                     if (correct) {
                                         JOptionPane.showMessageDialog(
                                             aFrame,
@@ -301,12 +285,9 @@ public class GUI {
                                             + player.getMoney()
                                         );
                                     }
-
                                 } else {
-
                                     String prize =
                                         physicalAward.getPrize();
-
                                     if (correct) {
                                         JOptionPane.showMessageDialog(
                                             aFrame,
@@ -321,7 +302,6 @@ public class GUI {
                                         );
                                     }
                                 }
-
                                 // Display the result of the guess.
                                 if (correct) {
                                     JOptionPane.showMessageDialog(
@@ -338,11 +318,9 @@ public class GUI {
                                         + gamePlay.getPlayingPhrase()
                                     );
                                 }
-
                                 newPhraseLabel.setText(
                                     "Phrase: " + gamePlay.getPlayingPhrase()
                                 );
-
                                 // Check whether the phrase is solved.
                                 if (phraseComplete) {
                                     JOptionPane.showMessageDialog(
@@ -351,11 +329,9 @@ public class GUI {
                                         + player.getNameFirst()
                                         + "! You solved it."
                                     );
-
                                     gameWon = true;
                                     break;
                                 }
-
                             } catch (MultipleLettersException ex) {
 
                                 messageArea.append(ex.getMessage() + "\n");
@@ -367,7 +343,6 @@ public class GUI {
                             }
                         }
                     }
-
                     // Ask whether the user wants to play another round.
                     int playAgain = JOptionPane.showConfirmDialog(
                         aFrame,
@@ -375,13 +350,11 @@ public class GUI {
                         "Play Again",
                         JOptionPane.YES_NO_OPTION
                     );
-
                     if (playAgain == JOptionPane.YES_OPTION) {
                         messageArea.setText("");
                         String newPhrase = JOptionPane.showInputDialog(
                             aFrame, "Enter a new phrase:"
                         );
-
                         if (newPhrase == null
                                 || newPhrase.trim().isEmpty()) {
 
@@ -389,18 +362,12 @@ public class GUI {
                                 aFrame,
                                 "No new phrase entered. Ending game."
                             );
-
                             playAnotherRound = false;
-
                         } else {
-
                             Phrases.setGamePhrase(newPhrase.trim());
                         }
-
                     } else {
-
                         playAnotherRound = false;
-
                         JOptionPane.showMessageDialog(
                             aFrame, "Thanks for playing!"
                         );
@@ -408,7 +375,6 @@ public class GUI {
                 }
             }
         });
-
         aFrame.setVisible(true);
     }
 }
