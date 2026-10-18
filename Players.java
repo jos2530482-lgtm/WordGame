@@ -1,3 +1,7 @@
+//This class is a subclass of Person and represents a player in the game. 
+// It has an additional attribute for money, which is initialized to 1000. 
+// The class provides methods to get and set the money, as well as a toString 
+// method to display the player's information.
 public class Players extends Person {
     
     private int money;
