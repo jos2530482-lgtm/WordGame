@@ -88,8 +88,6 @@ public class GUI {
         aFrame.add(saveMessageCheckBox);
         aFrame.add(scrollPane);
 
-
-
         // button that adds a new player to current players.
         addPlayerItem.addActionListener(new ActionListener() {
             @Override
@@ -161,7 +159,6 @@ public class GUI {
                 String newPhrase = JOptionPane.showInputDialog(
                     aFrame, "Enter new phrase:"
                 );
-
                 if (newPhrase == null || newPhrase.trim().isEmpty()) {
                     displayMessage.accept(
                         "Phrase cannot be empty.\n"
@@ -185,10 +182,10 @@ public class GUI {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 JOptionPane.showMessageDialog(
                     aFrame,
-                    "The layout of this game is designed to be simple and intuitive. "
-                    + "The menu bar allows you to add players, set a host, and start the game. "
-                    + "The main area displays the current players, the host, and the phrase to guess. "
-                    + "Buttons are provided for starting the game and setting a new phrase.",
+                    "I wanted the display to be more vertical than horizontal, so I used FlowLayout for the main"
+                    + "frame and the phrase panel. I wanted the phrase and the start game button to be centered, "
+                    + "so I used FlowLayout for those panels. I wanted the player and host information to be displayed"
+                    + " in a list format, so I used GridLayout for the info panel.",
                     "Layout",
                     JOptionPane.INFORMATION_MESSAGE
                 );
