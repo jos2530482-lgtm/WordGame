@@ -51,6 +51,10 @@ public class GUI {
         messageArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(messageArea);
         JCheckBox saveMessageCheckBox = new JCheckBox("Save Messages");
+        saveMessageCheckBox.setToolTipText(
+            "Check to save messages in the text area."
+            + " Uncheck to clear messages when a new message is displayed."
+        );
 
         // keeps messages if box is checked.
         java.util.function.Consumer<String> displayMessage = (message) -> {
@@ -60,9 +64,6 @@ public class GUI {
                 messageArea.setText(message + "\n");
             }
         };
-
-        messageArea.append("Welcome to the Word Game!\n");
-        messageArea.append("Use the Game menu to add players and set a host.\n");
 
         JButton newPhraseButton = new JButton("Set New Phrase");
         JButton startGameButton = new JButton("Start Game");
@@ -126,9 +127,10 @@ public class GUI {
                 String lastName = JOptionPane.showInputDialog(
                     aFrame, "Enter host last name:"
                 );
-                if (lastName == null || lastName.trim().isEmpty()) {
+                if (lastName == null) {
                     return;
                 }
+                lastName = lastName.trim();
                 currentHost[0] = new Hosts(
                     firstName.trim(), lastName.trim(), true
                 );
