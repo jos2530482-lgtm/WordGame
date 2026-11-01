@@ -1,7 +1,11 @@
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -17,6 +21,18 @@ import javax.swing.JTextArea;
 
 public class GUI {
 
+    public static void playSound(String soundFile) {
+        try {
+            File file = new File("week10audio/" + soundFile);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+
+        } catch (Exception e) {
+            System.out.println("Error playing sound: " + e.getMessage());
+        }
+    }
     public static void main(String[] args) {
 
         JFrame aFrame = new JFrame("Word Game");
@@ -214,8 +230,29 @@ public class GUI {
                     + "Toaster: Hamilton Beach - Target\n"
                     + "https://www.target.com/p/hamilton-beach-2-slice-toaster-stainless-steel/-/A-52062134\n\n"
                     + "VCR: Tape Players\n"
-                    + "https://tapeplayers.com/products/vcr-bundle-play-and-digitize-vhs-to-dvd",
-                    "Image Attributions",
+                    + "https://tapeplayers.com/products/vcr-bundle-play-and-digitize-vhs-to-dvd\n\n\n"
+                    + "Sound Attributions:\n\n"
+                    + "Winner Sound (winner.wav)\n"
+                    + "\"snd_cheer.wav\" by komanderkyle\n"
+                    + "Freesound.org - CC0\n"
+                    + "https://freesound.org/people/komanderkyle/sounds/482219/\n\n"
+                    + "Start Game Sound (start.wav)\n"
+                    + "\"let's go!.wav\" by Reitanna\n"
+                    + "Freesound.org - CC0\n"
+                    + "https://freesound.org/people/Reitanna/sounds/241581/\n\n"
+                    + "Prize Sound (prize.wav)\n"
+                    + "\"funny yay.wav\" by Reitanna\n"
+                    + "Freesound.org - CC0\n"
+                    + "https://freesound.org/people/Reitanna/sounds/323703/\n\n"
+                    + "Incorrect Guess Sound (incorrect.wav)\n"
+                    + "\"Wrong Answer Buzzer\" by -Andreas\n"
+                    + "Freesound.org - CC0\n"
+                    + "https://freesound.org/people/-Andreas/sounds/650842/\n\n"
+                    + "Correct Guess Sound (correct.wav)\n"
+                    + "\"correct.wav\" by Mudkip2016\n"
+                    + "Freesound.org - CC0 1.0 Universal\n"
+                    + "https://freesound.org/people/Mudkip2016/sounds/423930/",
+                    "Attributions",
                     JOptionPane.INFORMATION_MESSAGE
                 );
             }
@@ -223,8 +260,10 @@ public class GUI {
 
         // button that starts the game
         startGameButton.addActionListener(new ActionListener() {
+            
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
+                playSound("start.wav");
                 if (currentPlayers.isEmpty()) {
                     displayMessage.accept(
                         "Please add a player first.\n"
@@ -237,7 +276,7 @@ public class GUI {
                     );
                     return;
                 }
-
+                
                 boolean playAnotherRound = true;
 
                 while (playAnotherRound) {
@@ -299,6 +338,7 @@ public class GUI {
                                         player.getMoney() + change
                                     );
                                     if (correct) {
+                                        playSound("correct.wav");
                                         JOptionPane.showMessageDialog(
                                             aFrame,
                                             player.getNameFirst()
@@ -306,6 +346,7 @@ public class GUI {
                                             + player.getMoney()
                                         );
                                     } else {
+                                        playSound("incorrect.wav");
                                         JOptionPane.showMessageDialog(
                                             aFrame,
                                             player.getNameFirst()
@@ -327,6 +368,7 @@ public class GUI {
                                     }
 
                                     if (correct) {
+                                        playSound("prize.wav");
                                         ImageIcon prizeImage = new ImageIcon(
                                             "week10pics/" + imageFile
                                         );
@@ -371,6 +413,7 @@ public class GUI {
                                 );
                                 // Check whether the phrase is solved.
                                 if (phraseComplete) {
+                                    playSound("winner.wav");
                                     JOptionPane.showMessageDialog(
                                         aFrame,
                                         "Congratulations, "
