@@ -1,18 +1,19 @@
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import java.awt.FlowLayout;
-import java.util.ArrayList;
-import java.awt.event.ActionListener;
-import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import java.awt.GridLayout;
-import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
-import javax.swing.JCheckBox;
+import javax.swing.JTextArea;
 
 public class GUI {
 
@@ -27,10 +28,14 @@ public class GUI {
         JMenu aboutMenu = new JMenu("About");
         aboutMenu.setMnemonic('A');
         JMenuItem layoutItem = new JMenuItem("Layout");
+        JMenuItem attributionItem = new JMenuItem("Attribution");
+        
+        
         JMenuItem addPlayerItem = new JMenuItem("Add Player");
         JMenuItem addHostItem = new JMenuItem("Set Host");
         
         aboutMenu.add(layoutItem);
+        aboutMenu.add(attributionItem);
         gameMenu.setMnemonic('G');
         gameMenu.add(addPlayerItem);
         
@@ -47,6 +52,7 @@ public class GUI {
         JLabel label = new JLabel("Current Players: ");
         JLabel hostLabel = new JLabel("Host: ");
         JLabel newPhraseLabel = new JLabel("New Phrase: ");
+        JLabel prizeImageLabel = new JLabel();
         JTextArea messageArea = new JTextArea(10, 30);
         messageArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(messageArea);
@@ -82,6 +88,7 @@ public class GUI {
 
         aFrame.add(infoPanel);
         aFrame.add(phrasePanel);
+        aFrame.add(prizeImageLabel);
         aFrame.add(newPhraseButton);
         startGamePanel.add(startGameButton);
         aFrame.add(startGamePanel);
@@ -191,6 +198,28 @@ public class GUI {
                 );
             }
         });
+        // Attribution list.
+        attributionItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                JOptionPane.showMessageDialog(
+                    aFrame,
+                    "Image Attributions:\n\n"
+                    + "Earbuds: Beats Solo Buds - Target\n"
+                    + "https://www.target.com/p/beats-solo-buds-true-wireless-bluetooth-earbuds-matte-black/-/A-92146817\n\n"
+                    + "Game Board: Premium Custom Boxes\n"
+                    + "https://www.premiumcustomboxes.com/board-game-boxes/\n\n"
+                    + "Mystery Box: ILL Customz\n"
+                    + "https://illcustomz.com/products/mystery-box/\n\n"
+                    + "Toaster: Hamilton Beach - Target\n"
+                    + "https://www.target.com/p/hamilton-beach-2-slice-toaster-stainless-steel/-/A-52062134\n\n"
+                    + "VCR: Tape Players\n"
+                    + "https://tapeplayers.com/products/vcr-bundle-play-and-digitize-vhs-to-dvd",
+                    "Image Attributions",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+        });
 
         // button that starts the game
         startGameButton.addActionListener(new ActionListener() {
@@ -284,10 +313,30 @@ public class GUI {
                                             + player.getMoney()
                                         );
                                     }
-                                } else {
+                                                                } else {
                                     String prize =
                                         physicalAward.getPrize();
+                                    String imageFile = "";
+
+                                    switch (prize) {
+                                        case "toaster" -> imageFile = "toaster.JPG";
+                                        case "gameboard game" -> imageFile = "gameBoard.JPG";
+                                        case "VCR" -> imageFile = "VCR.JPG";
+                                        case "earbuds" -> imageFile = "earBuds.JPG";
+                                        case "mystery box" -> imageFile = "mysteryBox.JPG";
+                                    }
+
                                     if (correct) {
+                                        ImageIcon prizeImage = new ImageIcon(
+                                            "week10pics/" + imageFile
+                                        );
+                                        System.out.println("Image path: week10pics/" + imageFile);
+                                        System.out.println("Image loaded: " + prizeImage.getIconWidth()
+                                        + " x " + prizeImage.getIconHeight());
+                                        prizeImageLabel.setIcon(prizeImage);
+                                        aFrame.revalidate();
+                                        aFrame.repaint();
+
                                         JOptionPane.showMessageDialog(
                                             aFrame,
                                             player.getNameFirst()
