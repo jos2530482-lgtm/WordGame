@@ -1,5 +1,6 @@
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.Timer;
 
 public class GUI {
 
@@ -33,6 +35,36 @@ public class GUI {
             System.out.println("Error playing sound: " + e.getMessage());
         }
     }
+    public static void animateSweat(JFrame frame) {
+
+    ImageIcon sweatIcon = new ImageIcon("week10pics/sweat.jpg");
+
+    JLabel sweatLabel = new JLabel(sweatIcon);
+
+    sweatLabel.setBounds(-150, 200,
+        sweatIcon.getIconWidth(), sweatIcon.getIconHeight());
+
+    frame.add(sweatLabel);
+    frame.setComponentZOrder(sweatLabel, 0);
+
+    Timer timer = new Timer(15, new ActionListener() {
+        int x = -150;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            x += 5;
+            sweatLabel.setLocation(x, 200);
+
+            if (x > frame.getWidth()) {
+                ((Timer) e.getSource()).stop();
+                frame.remove(sweatLabel);
+                frame.repaint();
+            }
+        }
+    });
+
+    timer.start();
+}
     public static void main(String[] args) {
 
         JFrame aFrame = new JFrame("Word Game");
@@ -231,6 +263,9 @@ public class GUI {
                     + "https://www.target.com/p/hamilton-beach-2-slice-toaster-stainless-steel/-/A-52062134\n\n"
                     + "VCR: Tape Players\n"
                     + "https://tapeplayers.com/products/vcr-bundle-play-and-digitize-vhs-to-dvd\n\n\n"
+                    + "Sweat Animation: Awkward Smile Wipe Sweat Emoticon Pack\n"
+                    + "Created by 588ku - PNGTree\n"
+                    + "https://www.pngtree.com/freepng/awkward-smile-wipe-sweat-emoticon-pack_5935288.html\n\n"
                     + "Sound Attributions:\n\n"
                     + "Winner Sound (winner.wav)\n"
                     + "\"snd_cheer.wav\" by komanderkyle\n"
@@ -347,6 +382,9 @@ public class GUI {
                                         );
                                     } else {
                                         playSound("incorrect.wav");
+                                        if (Math.random() < 0.5) {
+                                            animateSweat(aFrame);
+                                        }
                                         JOptionPane.showMessageDialog(
                                             aFrame,
                                             player.getNameFirst()
